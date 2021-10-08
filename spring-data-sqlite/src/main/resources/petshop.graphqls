@@ -1,0 +1,94 @@
+type Query {
+    pets: [Pet]
+    animals: [Animal]
+    persons: [Person]
+    personPage: [Person]
+    findPersonById(id:ID!):Person!
+    personAll:[Person]!
+#    findPersonsConnection(first:Int,after:String):PersonConnection @connection(for: "Persons")
+#    findPersonsConnection(first: Int, after: String): StudentConnection @connection(for: "Student")
+    findPersonPage(page:Int!,size:Int!,name:String!):PageResult!
+}
+
+type PageResult{
+    items:[Person]!
+    pageNo: Int!
+    pageSize: Int!
+    totalCount: Int!
+}
+
+type Page{
+    content: [Person]!
+    pageable: [pageable]!
+    last: Boolean!
+    totalPages: Int!
+    totalElements: Int!
+    size: Int!
+    number: Int!
+    sort: [sort]!
+    first: Boolean!
+    numberOfElements: Int!
+    empty: Boolean!
+}
+type pageable{
+    sort: [sort]!
+    offset: Int!
+    pageNumber: Int!
+    pageSize: Int!
+    unpaged: Boolean!
+    paged: Boolean!
+}
+type sort{
+    sorted: Boolean!
+    unsorted: Boolean!
+    empty: Boolean!
+}
+
+type Mutation{
+    createPerson(name:String!,message:String!):Person
+    updatePersonById(id:ID!,name:String!,message:String!):Person
+}
+
+type Pet {
+    id: ID!
+    type: Animal
+    name: String
+    age: Int
+}
+
+enum Animal {
+    DOG
+    CAT
+    BADGER
+    MAMMOTH
+    OOOOOO
+}
+
+#type personPage{
+#    persons: [Person]
+#}
+scalar LocalDateTime
+
+type Person{
+    id: ID!
+    name: String
+    message: String
+    createUser: String
+    updateUser: String
+#    createTime: String
+#    updateTime: String
+#    createTime: DateTime
+#    updateTime: DateTime
+}
+
+input PersonInput{
+#    id:ID!
+    name:String!
+    message:String!
+}
+
+
+#scalar Long
+#scalar Date
+#scalar DateTime
+

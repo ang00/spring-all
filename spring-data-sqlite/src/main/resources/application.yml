@@ -1,0 +1,39 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: com.em.springdatasqlite.config.SQLiteDialect
+    generate-ddl: true
+    properties:
+      hibernate:
+        fromat_sql: true
+        use_sql_comments: true
+  datasource:
+    url: jdbc:sqlite:doing.db
+#    url: jdbc:sqlite:doing.db
+    driver-class-name: org.sqlite.JDBC
+    username: admin
+    password: admin
+#    initialization-mode: always
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: use_defaults
+    time-zone: GMT+8
+server:
+  port: 9099
+# 显示 sql 语句执行参数
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
+#logging.logstash:
+#  enable: true
+#  url: 192.168.40.129:5000
+#logbook:
+#  format:
+#    style: json
