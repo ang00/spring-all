@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.em</groupId>
-    <artifactId>all</artifactId>
+    <artifactId>spring-all</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>all</name>
+    <name>spring-all</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
