@@ -1,0 +1,30 @@
+server:
+  port: 9211
+spring:
+#  data:
+#    elasticsearch:
+#      client:
+#        reactive:
+#          endpoints: 127.0.0.1:9200
+#          use-ssl: false
+#          username: elastic
+#          password: 123456
+#      repositories:
+#        enabled: true
+  elasticsearch:
+    rest:
+      uris: 127.0.0.1:9200
+      read-timeout: 10s
+      username: elastic
+      password: 123456
+      sniffer:
+        interval: 10m
+        delay-after-failure: 30s
+
+logbook:
+  format:
+    style: json
+
+logging:
+  level:
+    org.springframework.web: INFO

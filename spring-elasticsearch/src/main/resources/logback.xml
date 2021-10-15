@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds" debug="false">
+    <contextName>em</contextName>
+    <property name="log.charset" value="utf-8"/>
+    <property name="LOG_PATH" value="logs/"/>
+    <!--    <property name="log.pattern" value="%black(%contextName-) %red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}) - %gray(%msg%n)"/>-->
+    <property name="log.pattern"
+              value="%contextName- %red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}) - %msg%n"/>
+
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+            <charset>${log.charset}</charset>
+        </encoder>
+    </appender>
+
+    <!--普通日志输出到控制台-->
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+
+    <!--监控sql日志输出 -->
+    <logger name="jdbc.sqlonly" level="INFO" additivity="false">
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="jdbc.resultset" level="ERROR" additivity="false">
+        <appender-ref ref="console"/>
+    </logger>
+
+    <!--  如想看到表格数据，将OFF改为INFO  -->
+    <logger name="jdbc.resultsettable" level="OFF" additivity="false">
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="jdbc.connection" level="OFF" additivity="false">
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="jdbc.sqltiming" level="OFF" additivity="false">
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="jdbc.audit" level="OFF" additivity="false">
+        <appender-ref ref="console"/>
+    </logger>
+
+
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+    <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- ch.qos.logback.core.rolling.RollingFileAppender 文件日志输出 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/access.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <MaxHistory>180</MaxHistory>
+            <FileNamePattern>${LOG_PATH}/access-%d{yyyy-MM-dd}_%i.log.zip</FileNamePattern>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <MaxFileSize>1GB</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%.8thread] %-5level %logger{36}:%line -%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="err" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/err.log</File>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/err-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <MaxHistory>100</MaxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%.8thread] %-5level %logger{36}:%line - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="biz" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/biz.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <MaxHistory>100</MaxHistory>
+            <FileNamePattern>${LOG_PATH}/em-%d{yyyy-MM-dd}_%i.log.zip</FileNamePattern>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <MaxFileSize>100MB</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%.8thread] %-5level %logger{36}:%line -%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="monitor" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${LOG_PATH}/em.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <MaxHistory>100</MaxHistory>
+            <FileNamePattern>${LOG_PATH}/monitor-%d{yyyy-MM-dd}_%i.log.zip</FileNamePattern>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <MaxFileSize>100MB</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%.8thread] %-5level %logger{36}:%line -%msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>512</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="monitor"/>
+    </appender>
+
+    <logger name="com.em.springelasticsearch" additivty="false" level="err">
+        <appender-ref ref="err"/>
+    </logger>
+
+
+    <!--    <logger name="com.cmb.mebact" additivity="false" level="debug">-->
+    <!--        <appender-ref ref="biz"/>-->
+    <!--        <appender-ref ref="console"/>-->
+    <!--    </logger>-->
+
+    <logger name="com.em.springelasticsearch.*" additivity="false" level="debug">
+        <appender-ref ref="biz"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
+    <logger name="org.hibernate.engine.QueryParameters" level="DEBUG"/>
+    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor" level="TRACE"/>
+
+    <root level="info">
+        <appender-ref ref="ASYNC"/>
+        <appender-ref ref="console"/>
+    </root>
+</configuration>
